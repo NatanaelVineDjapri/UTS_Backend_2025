@@ -1,24 +1,16 @@
-const { env, port } = require('./core/config');
-const logger = require('./core/logger')('app');
-const server = require('./core/server');
+const app = require('./core/server');
+const mongoose = require('mongoose');
 
-const app = server.listen(port, (err) => {
-  if (err) {
-    logger.fatal(err, 'Failed to start the server.');
-    process.exit(1);
-  } else {
-    logger.info(`Server runs at port ${port} in ${env} environment`);
-  }
-});
+const PORT = 3000;
+const MONGO_URI = 'mongodb+srv://NatanaelVineDjapri:GguSHonF3MCz32du@cluster0.4tq7o.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0';
 
-process.on('uncaughtException', (err) => {
-  logger.fatal(err, 'Uncaught exception.');
-
-  // Shutdown the server gracefully
-  app.close(() => process.exit(1));
-
-  // If a graceful shutdown is not achieved after 1 second,
-  // shut down the process completely
-  setTimeout(() => process.abort(), 1000).unref();
-  process.exit(1);
-});
+mongoose.connect(MONGO_URI)
+  .then(() => {
+    console.log('MongoDB connected');
+    app.listen(PORT, () => {
+      console.log(`Server jalan di http://localhost:${PORT}`);
+    });
+  })
+  .catch((err) => {
+    console.error('MongoDB connection error:', err);
+  });

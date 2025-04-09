@@ -1,13 +1,8 @@
 const express = require('express');
+const router = express.Router();
+const cocktailRoutes = require('./components/routes/cocktailRoutes');
 
-const books = require('./components/books/books-route');
-const users = require('./components/users/users-route');
+// Ini udah bener
+router.use('/cocktails', cocktailRoutes);
 
-module.exports = () => {
-  const app = express.Router();
-
-  books(app);
-  users(app);
-
-  return app;
-};
+module.exports = router;
