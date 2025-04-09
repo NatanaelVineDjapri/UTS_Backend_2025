@@ -24,7 +24,15 @@ const findByFirstLetter = async (letter) => {
 const getByCocktailId = async (cocktailId) => {
   return await cocktailRepository.findByCocktailId(cocktailId);
 };
+const getPopularCocktails = async () => {
+  return await cocktailRepository.findPopularCocktails();  // lewat repository
+};
+const getCocktailsByCountry = async (country) => {
+  return await cocktailRepository.findByCountry(country);
 
+};const getCocktailByGlass = async (glass) => {
+  return await cocktailRepository.findByGlass(glass);
+};
 module.exports = { createCocktail, findCocktailByName, updateCocktailByCocktailId,getAllCocktails,findByFirstLetter,
-  getByCocktailId
+  getByCocktailId,getPopularCocktails,getCocktailsByCountry,getCocktailByGlass
  };

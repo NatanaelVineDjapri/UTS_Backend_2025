@@ -19,6 +19,18 @@ const cocktailSchema = new mongoose.Schema({
     required: true,
     unique: true,
   },
+  popular:{
+    type : Boolean,
+    default: false,
+  },
+  country:{
+    type:[String],
+    require : true
+  },
+  glass:{
+    type:[String],
+    require : true
+  }
 });
 
 const Cocktail = mongoose.model('Cocktail', cocktailSchema);

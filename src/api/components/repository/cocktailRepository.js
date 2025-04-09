@@ -23,7 +23,6 @@ const updateCocktailByCocktailId = async (cocktailId, updateData) => {
   );
 };
 
-
 const findByFirstLetter = async (letter) => {
   return await Cocktail.find({
     name: { $regex: `^${letter}`, $options: 'i' }
@@ -33,4 +32,19 @@ const findByCocktailId = async (cocktailId) => {
   return await Cocktail.findOne({ cocktailId: cocktailId });
 };
 
-module.exports = { create, findByName, updateCocktailByCocktailId,findAllCocktails,findByFirstLetter ,findByCocktailId};
+// const findPopular = async () => {
+//   return await Cocktail.find({ popular: true });
+// };
+
+const findPopularCocktails = async () => {
+  return await Cocktail.find({ popular: true });
+};
+const findByCountry = async (country) => {
+  return await Cocktail.find({ country:country} );
+};
+const findByGlass = async (glass) => {
+  return await Cocktail.find({ glass:glass} );
+};
+module.exports = { create, findByName, updateCocktailByCocktailId,findAllCocktails,findByFirstLetter ,findByCocktailId,findPopularCocktails,
+  findByCountry,findByGlass
+};

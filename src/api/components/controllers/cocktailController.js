@@ -60,7 +60,6 @@ const getByFirstLetter = async (req, res) => {
   }
 }
 
-
 const getByCocktailId = async (req, res) => {
   try {
     const cocktailId = req.params.cocktailId;
@@ -73,4 +72,35 @@ const getByCocktailId = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
-module.exports = { createCocktail, searchCocktailByName, updateCocktailByCocktailId,getByFirstLetter,getByCocktailId,getAllCocktails};
+
+
+const getPopularCocktails = async (req, res) => {
+  try {
+    const popularCocktails = await cocktailService.getPopularCocktails();  // lewat service
+    res.status(200).json(popularCocktails);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+const getCountryByName = async (req,res) =>{
+  try{
+    const { country } = req.params; 
+    const cocktails = await cocktailService.getCocktailsByCountry(country);
+    res.json(cocktails);
+  } catch (error){
+    res.status(500).json({ error: error.message });
+  }
+}
+const getGlassCocktail = async (req,res) =>{
+  try{
+    const { glass } = req.params; 
+    const cocktails = await cocktailService.getCocktailByGlass(glass);
+    res.json(cocktails);
+  } catch (error){
+    res.status(500).json({ error: error.message });
+  }
+}
+module.exports = { createCocktail, searchCocktailByName, updateCocktailByCocktailId,getByFirstLetter,getByCocktailId,getAllCocktails,getPopularCocktails,
+  getCountryByName,getGlassCocktail
+};
