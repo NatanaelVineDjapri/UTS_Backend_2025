@@ -45,6 +45,9 @@ const findByCountry = async (country) => {
 const findByGlass = async (glass) => {
   return await Cocktail.find({ glass:glass} );
 };
+const findByFlavour = async (flavour) => {
+  return await Cocktail.find({flavour:flavour})
+}
 module.exports = { create, findByName, updateCocktailByCocktailId,findAllCocktails,findByFirstLetter ,findByCocktailId,findPopularCocktails,
-  findByCountry,findByGlass
+  findByCountry,findByGlass,findByFlavour
 };

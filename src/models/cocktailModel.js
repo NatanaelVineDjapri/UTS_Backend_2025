@@ -30,6 +30,10 @@ const cocktailSchema = new mongoose.Schema({
   glass:{
     type:[String],
     require : true
+  },
+  flavour:{
+    type:[String],
+    require : true
   }
 });
 

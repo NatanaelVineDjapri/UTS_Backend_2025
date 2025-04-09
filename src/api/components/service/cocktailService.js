@@ -30,9 +30,20 @@ const getPopularCocktails = async () => {
 const getCocktailsByCountry = async (country) => {
   return await cocktailRepository.findByCountry(country);
 
-};const getCocktailByGlass = async (glass) => {
+};
+const getCocktailByGlass = async (glass) => {
   return await cocktailRepository.findByGlass(glass);
 };
+
+const getCocktailFlavour = async (flavour) => {
+  const cocktails = await cocktailRepository.findByFlavour(flavour);
+  if (!cocktails.length) {
+    throw new Error('No cocktails found with that flavour');
+  }
+  return cocktails;
+}
+
+
 module.exports = { createCocktail, findCocktailByName, updateCocktailByCocktailId,getAllCocktails,findByFirstLetter,
-  getByCocktailId,getPopularCocktails,getCocktailsByCountry,getCocktailByGlass
+  getByCocktailId,getPopularCocktails,getCocktailsByCountry,getCocktailByGlass,getCocktailFlavour
  };
