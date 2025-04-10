@@ -20,7 +20,7 @@ const cocktailSchema = new mongoose.Schema({
       default: false,
     },
     Alcoholic: {
-      type: [String],
+      type: Boolean,
       required: true,
     },
     Glass: {

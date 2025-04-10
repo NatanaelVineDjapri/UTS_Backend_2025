@@ -116,10 +116,15 @@ const errorTypes = {
       status: 401,
       code: 'PARSE_TOKEN_ERROR',
     },
-    EMAIL_ALREADY_TAKEN: {
-      description: 'This email already taken, try use another',
+      NAME_ALREADY_TAKEN: {
+      description: 'This Name already taken, try use another',
       status: 409,
-      code: 'EMAIL_ALREADY_TAKEN_ERROR',
+      code: 'Name_ALREADY_TAKEN_ERROR',
+    },
+    ID_ALREADY_TAKEN: {
+      description: 'This CocktailID already taken, try use another',
+      status: 409,
+      code: 'CoktailID_ALREADY_TAKEN_ERROR',
     },
     SEND_EMAIL: {
       description: 'Send email error',

@@ -6,13 +6,14 @@ router.post('/', cocktailController.createCocktail);
 router.get('/all', cocktailController.getAllCocktails); 
 router.get('/search', cocktailController.getCocktailByName);
 router.get('/popular', cocktailController.getPopularCocktails);
-router.put('/:cocktailId', cocktailController.updateCocktailByCocktailId)
-router.get('/country/:country',cocktailController.getCountryByName)
-router.get('/glass/:glass',cocktailController.getGlassCocktail)
+router.put('/update/:cocktailId', cocktailController.updateCocktailById);
+router.get('/country/:country',cocktailController.getCountryByName);
+router.get('/glass/:glass',cocktailController.getGlassCocktail);
 router.get('/letter', cocktailController.getByFirstLetter);
 router.get('/id/:cocktailId', cocktailController.getByCocktailId);
 router.get('/flavour/:flavour',cocktailController.getCocktailFlavour);
+router.get('/alcoholic',cocktailController.getCocktailByAlcoholic);
 
 
 module.exports = router
-//flavour,glass,country
+

@@ -2,13 +2,33 @@ const cocktailService = require('../service/cocktailService');
 const { errorResponder, errorTypes } = require('../../../core/error');
 const createCocktail = async (req, res,next) => {
   try {
-    const newCocktail = await cocktailService.createCocktail(req.body);
-    res.status(201).json(newCocktail);
-  } catch (error) {
-    if (error.code === 11000) {
-      return next(errorResponder(errorTypes.DB_DUPLICATE_CONFLICT, 'Cocktail already exists'));
+    const {
+      name,
+      cocktailId,
+    } = req.body;
+    if (!name){
+      throw errorResponder(errorTypes.VALIDATION_ERROR,'Name is required');
     }
-    return next(errorResponder(errorTypes.DB, error.message));
+    if (!cocktailId){
+      throw errorResponder(errorTypes.VALIDATION_ERROR,'CocktailID is required');
+    }
+    if(await cocktailService.nameExists(name)){
+      throw errorResponder(errorTypes.NAME_ALREADY_TAKEN,'Name Already Exists');
+    }
+    if(await cocktailService.cocktailIdExists(cocktailId)){
+      throw errorResponder(errorTypes.NAME_ALREADY_TAKEN,'Cocktail Already Exists');
+    }
+    if(cocktailId<10000 || cocktailId>20000){
+      throw errorResponder(errorTypes.VALIDATION_ERROR,'Cocktail Id must be 5-digit number');
+    }
+    const newCocktail = await cocktailService.createCocktail(req.body);
+    if (!newCocktail){
+      throw errorResponder(errorTypes.UNPROCESSABLE_ENTITY,'Failed to create Cocktail Data');
+    }
+    return res.status(201).json({data:newCocktail,message :'Cocktail data successfully created'});
+
+  } catch (error) {
+    next(error);
   }
 };
 
@@ -16,7 +36,6 @@ const createCocktail = async (req, res,next) => {
 const getCocktailByName = async (req, res,next) => {
   try {
     const { name } = req.query; 
-
     const cocktails = await cocktailService.findCocktailByName(name); 
     res.json(cocktails);
   } catch (error) {
@@ -32,17 +51,20 @@ const getAllCocktails = async (req,res,next) => {
     next(error);
   }
 };
-const updateCocktailByCocktailId = async (req, res,next) => {
+const updateCocktailById= async (req, res,next) => {
   try {
     const { cocktailId } = req.params;
     const updateData = req.body;
-
-    const updatedCocktail = await cocktailService.updateCocktailByCocktailId(cocktailId, updateData);
-
-    if (!updatedCocktail) {
-      return res.status(404).json({ error: 'Cocktail not found' });
+    if (!cocktailId) {
+      throw errorResponder(errorTypes.VALIDATION_ERROR, 'Cocktail Id is required');
     }
-
+    if (isNaN(cocktailId)) {
+      throw errorResponder(errorTypes.VALIDATION_ERROR, 'Cocktail Id must be a number');
+    }
+    if ('cocktailId' in updateData) {
+      throw errorResponder(errorTypes.VALIDATION_ERROR, 'cocktailId cannot be updated');
+    }
+    const updatedCocktail = await cocktailService.updateCocktailByCocktailId(cocktailId, updateData);
     res.json(updatedCocktail);
     } catch (error) {
     next(error);
@@ -52,19 +74,33 @@ const updateCocktailByCocktailId = async (req, res,next) => {
 const getByFirstLetter = async (req, res,next) => {
   try {
     const { letter } = req.query; 
+    if (!letter) {
+      throw errorResponder(errorTypes.VALIDATION_ERROR, 'Query "letter" is required');
+    }
+    if (letter.length !== 1) {
+      throw errorResponder(errorTypes.VALIDATION_ERROR, 'Query "letter" must be a single alphabet character');
+    }
     const cocktails = await cocktailService.findByFirstLetter(letter);
-    res.status(200).json(cocktails);
+    res.json(cocktails); 
   } catch (error) {
-    next(error);
+    next(error); 
   }
 }
 
 const getByCocktailId = async (req, res,next) => {
   try {
     const cocktailId = req.params.cocktailId;
+    if (!cocktailId) {
+      throw errorResponder(errorTypes.VALIDATION_ERROR, 'Cocktail Id is required');
+    }
+
+    if (isNaN(cocktailId)) {
+      throw errorResponder(errorTypes.VALIDATION_ERROR, 'Cocktail Id must be a number');
+    }
+    
     const cocktail = await cocktailService.getByCocktailId(cocktailId);
     if (!cocktail) {
-      return res.status(404).json({ message: 'Cocktail not found' });
+      throw errorResponder(errorTypes.NOT_FOUND, 'Cocktail not found');
     }
     res.json(cocktail);
   } catch (error) {
@@ -86,15 +122,21 @@ const getCountryByName = async (req,res,next) =>{
   try{
     const { country } = req.params; 
     const cocktails = await cocktailService.getCocktailsByCountry(country);
+    if (cocktails.length === 0) {
+      throw errorResponder(errorTypes.NOT_FOUND, 'No cocktails found for this country');
+    }
     res.json(cocktails);
   } catch (error){
-    next(error);
+    next(error); 
   }
 }
 const getGlassCocktail = async (req,res,next) =>{
   try{
     const { glass } = req.params; 
     const cocktails = await cocktailService.getCocktailByGlass(glass);
+    if (cocktails.length === 0) {
+      throw errorResponder(errorTypes.NOT_FOUND, 'No cocktails found ');
+    }
     res.status(200).json(cocktails);
   } catch (error){
     next(error);
@@ -103,13 +145,34 @@ const getGlassCocktail = async (req,res,next) =>{
 const getCocktailFlavour = async (req,res,next) =>{
   try{
     const {flavour} = req.params;
-
     const cocktails = await cocktailService.getCocktailFlavour(flavour);
+    if (cocktails.length === 0) {
+      throw errorResponder(errorTypes.NOT_FOUND, 'No cocktails found ');
+    }
     res.json(cocktails);
   } catch(error){
     next(error);
   }
 }
-module.exports = { createCocktail, getCocktailByName, updateCocktailByCocktailId,getByFirstLetter,getByCocktailId,getAllCocktails,getPopularCocktails,
-  getCountryByName,getGlassCocktail,getCocktailFlavour
+
+const getCocktailByAlcoholic = async (req,res,next) =>{
+  try{
+    const cocktails = await cocktailService.getCocktailAlcoholic();
+    res.json(cocktails);
+  } catch(error){
+    next(error);
+  }
+}
+module.exports = { 
+  createCocktail, 
+  getCocktailByName,
+  updateCocktailById,
+  getByFirstLetter,
+  getByCocktailId,
+  getAllCocktails,
+  getPopularCocktails,
+  getCountryByName,
+  getGlassCocktail,
+  getCocktailFlavour,
+  getCocktailByAlcoholic
 };
