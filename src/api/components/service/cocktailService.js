@@ -1,61 +1,66 @@
-const Cocktail = require('../../../models/cocktailModel');
 const cocktailRepository = require('../repository/cocktailRepository');
 
-const createCocktail = async (data) => {
-  return await cocktailRepository.create(data);
-};
-const nameExists = async (name) =>{
+async function createCocktail(data) {
+  return cocktailRepository.create(data);
+}
+
+async function nameExists(name) {
   const cocktails = await cocktailRepository.findByName(name);
   return !!cocktails.length;
-};
-const cocktailIdExists = async (cocktailId) => {
+}
+
+async function cocktailIdExists(cocktailId) {
   const cocktails = await cocktailRepository.findByCocktailId(cocktailId);
   return !!cocktails.length;
-};
-const findCocktailByName = async (name) => {
-  return await cocktailRepository.findByName(name);
-};
+}
 
-const getAllCocktails = async () => {
-  return await cocktailRepository.findAllCocktails();
-};
+async function findCocktailByName(name) {
+  return cocktailRepository.findByName(name);
+}
 
-const updateCocktailByCocktailId = async (cocktailId, updateData) => {
-  return await cocktailRepository.updateCocktailByCocktailId(cocktailId, updateData);
-};
+async function getAllCocktails() {
+  return cocktailRepository.findAllCocktails();
+}
 
-const findByFirstLetter = async (letter) => {
-  return await cocktailRepository.findByFirstLetter(letter);
-};
+async function updateCocktailByCocktailId(cocktailId, updateData) {
+  return cocktailRepository.updateCocktailByCocktailId(cocktailId, updateData);
+}
 
-const getByCocktailId = async (cocktailId) => {
-  return await cocktailRepository.findByCocktailId(cocktailId);
-};
-const getPopularCocktails = async () => {
-  return await cocktailRepository.findPopularCocktails();  // lewat repository
-};
-const getCocktailsByCountry = async (country) => {
-  return await cocktailRepository.findByCountry(country);
-};
+async function findByFirstLetter(letter) {
+  return cocktailRepository.findByFirstLetter(letter);
+}
 
-const getCocktailByGlass = async (glass) => {
-  return await cocktailRepository.findByGlass(glass);
-};
+async function getByCocktailId(cocktailId) {
+  return cocktailRepository.findByCocktailId(cocktailId);
+}
 
-const getCocktailFlavour = async (flavour) => {
+async function getPopularCocktails() {
+  return cocktailRepository.findPopularCocktails();
+}
+
+async function getCocktailsByCountry(country) {
+  return cocktailRepository.findByCountry(country);
+}
+
+async function getCocktailByGlass(glass) {
+  return cocktailRepository.findByGlass(glass);
+}
+
+async function getCocktailFlavour(flavour) {
   const cocktails = await cocktailRepository.findByFlavour(flavour);
   if (!cocktails.length) {
     throw new Error('No cocktails found with that flavour');
   }
   return cocktails;
-};
-const getCocktailAlcoholic = async () => {
-  return await cocktailRepository.findAlcoholic();
 }
 
-module.exports = { 
-  createCocktail, 
-  findCocktailByName, 
+async function getCocktailAlcoholic() {
+  return cocktailRepository.findAlcoholic();
+}
+
+module.exports = {
+  createCocktail,
+  findCocktailByName,
   updateCocktailByCocktailId,
   getAllCocktails,
   findByFirstLetter,
@@ -66,5 +71,5 @@ module.exports = {
   getCocktailFlavour,
   getCocktailAlcoholic,
   nameExists,
-  cocktailIdExists
- };
+  cocktailIdExists,
+};

@@ -1,57 +1,50 @@
 const Cocktail = require('../../../models/cocktailModel');
 
+async function create(data) {
+  return Cocktail.create(data);
+}
 
-const create = async (data) => {
-  return await Cocktail.create(data);
-};
+async function findByName(name) {
+  return Cocktail.find({ name: { $regex: name, $options: 'i' } });
+}
 
-const findByName = async (name) => {
-  return await Cocktail.find({ name: { $regex: name, $options: 'i' } });
-};
+async function findAllCocktails() {
+  return Cocktail.find({});
+}
 
-const findAllCocktails = async () => {
-  return await Cocktail.find({}); 
-};
+async function updateCocktailByCocktailId(cocktailId, updateData) {
+  return Cocktail.findOneAndUpdate({ cocktailId }, updateData, { new: true });
+}
 
-const updateCocktailByCocktailId = async (cocktailId, updateData) => {
-  return await Cocktail.findOneAndUpdate(
-    { cocktailId: cocktailId },   
-    updateData,
-    { new: true }               
-  );
-};
+async function findByFirstLetter(letter) {
+  return Cocktail.find({ name: { $regex: `^${letter}`, $options: 'i' } });
+}
 
-const findByFirstLetter = async (letter) => {
-  return await Cocktail.find({
-    name: { $regex: `^${letter}`, $options: 'i' }
-  });
-};
-                      
-const findByCocktailId = async (cocktailId) => {
-  return await Cocktail.findOne({ cocktailId: cocktailId });
-};
+async function findByCocktailId(cocktailId) {
+  return Cocktail.findOne({ cocktailId });
+}
 
-const findPopularCocktails = async () => {
-  return await Cocktail.find({ popular: true });
-};
+async function findPopularCocktails() {
+  return Cocktail.find({ popular: true });
+}
 
-const findByCountry = async (country) => {
-  return await Cocktail.find({country: { $regex: `^${country}$`, $options: 'i' }});
-};
+async function findByCountry(country) {
+  return Cocktail.find({ country: { $regex: `^${country}$`, $options: 'i' } });
+}
 
-const findByGlass = async (glass) => {
-  return await Cocktail.find({glass: { $regex: `^${glass}$`, $options: 'i' }});
-};
+async function findByGlass(glass) {
+  return Cocktail.find({ glass: { $regex: `^${glass}$`, $options: 'i' } });
+}
 
-const findByFlavour = async (flavour) => {
-  return await Cocktail.find({flavour:{$regex:`${flavour}$`,$options : 'i'}});
-};
+async function findByFlavour(flavour) {
+  return Cocktail.find({ flavour: { $regex: `${flavour}$`, $options: 'i' } });
+}
 
-const findAlcoholic = async () => {
-  return await Cocktail.find({ Alcoholic : true });
-};
+async function findAlcoholic() {
+  return Cocktail.find({ Alcoholic: true });
+}
 
-module.exports = { 
+module.exports = {
   create,
   findByName,
   updateCocktailByCocktailId,
@@ -62,5 +55,5 @@ module.exports = {
   findByCountry,
   findByGlass,
   findByFlavour,
-  findAlcoholic
+  findAlcoholic,
 };

@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "nodemon ./src/index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "eslint": "eslint src/**"
+    "eslint": "eslint src/**",
+    "esfix":"eslint src/** --fix"
   },
   "author": "Janson Hendryli",
   "license": "ISC",
