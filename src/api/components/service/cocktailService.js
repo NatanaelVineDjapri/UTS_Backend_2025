@@ -4,50 +4,50 @@ async function createCocktail(data) {
   return cocktailRepository.create(data);
 }
 
-async function nameExists(name) {
-  const cocktails = await cocktailRepository.findByName(name);
+async function nameExists(Name) {
+  const cocktails = await cocktailRepository.findByName(Name);
   return !!cocktails.length;
 }
 
-async function cocktailIdExists(cocktailId) {
-  const cocktails = await cocktailRepository.findByCocktailId(cocktailId);
-  return !!cocktails.length;
+async function cocktailIdExists(CocktailId) {
+  const cocktails = await cocktailRepository.findByCocktailId(CocktailId);
+  return !!cocktails;
 }
 
-async function findCocktailByName(name) {
-  return cocktailRepository.findByName(name);
+async function findCocktailByName(Name) {
+  return cocktailRepository.findByName(Name);
 }
 
 async function getAllCocktails() {
   return cocktailRepository.findAllCocktails();
 }
 
-async function updateCocktailByCocktailId(cocktailId, updateData) {
-  return cocktailRepository.updateCocktailByCocktailId(cocktailId, updateData);
+async function updateCocktailByCocktailId(CocktailId, updateData) {
+  return cocktailRepository.updateCocktailByCocktailId(CocktailId, updateData);
 }
 
 async function findByFirstLetter(letter) {
   return cocktailRepository.findByFirstLetter(letter);
 }
 
-async function getByCocktailId(cocktailId) {
-  return cocktailRepository.findByCocktailId(cocktailId);
+async function getByCocktailId(CocktailId) {
+  return cocktailRepository.findByCocktailId(CocktailId);
 }
 
 async function getPopularCocktails() {
   return cocktailRepository.findPopularCocktails();
 }
 
-async function getCocktailsByCountry(country) {
-  return cocktailRepository.findByCountry(country);
+async function getCocktailsByCountry(Country) {
+  return cocktailRepository.findByCountry(Country);
 }
 
-async function getCocktailByGlass(glass) {
-  return cocktailRepository.findByGlass(glass);
+async function getCocktailByGlass(Glass) {
+  return cocktailRepository.findByGlass(Glass);
 }
 
-async function getCocktailFlavour(flavour) {
-  const cocktails = await cocktailRepository.findByFlavour(flavour);
+async function getCocktailFlavour(Flavour) {
+  const cocktails = await cocktailRepository.findByFlavour(Flavour);
   if (!cocktails.length) {
     throw new Error('No cocktails found with that flavour');
   }
@@ -58,6 +58,20 @@ async function getCocktailAlcoholic() {
   return cocktailRepository.findAlcoholic();
 }
 
+async function getCocktailNonAlcoholic() {
+  return cocktailRepository.findNonAlcoholic();
+}
+
+async function getLatestCocktail() {
+  return cocktailRepository.findLatestCocktail();
+}
+
+async function getCategoryCocktail(Category) {
+  return cocktailRepository.findByCategory(Category);
+}
+async function getRandomCocktail() {
+  return cocktailRepository.findRandomCategory();
+}
 module.exports = {
   createCocktail,
   findCocktailByName,
@@ -70,6 +84,10 @@ module.exports = {
   getCocktailByGlass,
   getCocktailFlavour,
   getCocktailAlcoholic,
+  getCocktailNonAlcoholic,
   nameExists,
   cocktailIdExists,
+  getLatestCocktail,
+  getCategoryCocktail,
+  getRandomCocktail,
 };

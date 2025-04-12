@@ -3,34 +3,35 @@ const { errorResponder, errorTypes } = require('../../../core/error');
 
 async function createCocktail(req, res, next) {
   try {
-    const { name, cocktailId } = req.body;
-    if (!name) {
+    const { Name, CocktailId } = req.body;
+    if (!Name) {
       throw errorResponder(errorTypes.VALIDATION_ERROR, 'Name is required');
     }
-    if (!cocktailId) {
+    if (!CocktailId) {
       throw errorResponder(
         errorTypes.VALIDATION_ERROR,
         'CocktailID is required'
       );
     }
-    if (await cocktailService.nameExists(name)) {
+    if (await cocktailService.nameExists(Name)) {
       throw errorResponder(
         errorTypes.NAME_ALREADY_TAKEN,
         'Name Already Exists'
       );
     }
-    if (await cocktailService.cocktailIdExists(cocktailId)) {
+    if (await cocktailService.cocktailIdExists(CocktailId)) {
       throw errorResponder(
         errorTypes.NAME_ALREADY_TAKEN,
-        'Cocktail Already Exists'
+        'CocktailID Already Exists'
       );
     }
-    if (cocktailId < 10000 || cocktailId > 20000) {
+    if (CocktailId < 10000 || CocktailId > 20000) {
       throw errorResponder(
         errorTypes.VALIDATION_ERROR,
         'Cocktail Id must be 5-digit number'
       );
     }
+    req.body.dateModified = new Date();
     const newCocktail = await cocktailService.createCocktail(req.body);
     if (!newCocktail) {
       throw errorResponder(
@@ -38,10 +39,7 @@ async function createCocktail(req, res, next) {
         'Failed to create Cocktail Data'
       );
     }
-    return res.status(201).json({
-      data: newCocktail,
-      message: 'Cocktail data successfully created',
-    });
+    return res.status(201).json(newCocktail);
   } catch (error) {
     return next(error);
   }
@@ -49,11 +47,11 @@ async function createCocktail(req, res, next) {
 
 async function getCocktailByName(req, res, next) {
   try {
-    const { name } = req.params;
-    if (!name) {
+    const { Name } = req.params;
+    if (!Name) {
       throw errorResponder(errorTypes.VALIDATION_ERROR, 'Name is required');
     }
-    const cocktail = await cocktailService.findCocktailByName(name);
+    const cocktail = await cocktailService.findCocktailByName(Name);
     if (!cocktail) {
       throw errorResponder(errorTypes.NOT_FOUND, 'Cocktail not found');
     }
@@ -73,22 +71,22 @@ async function getAllCocktails(req, res, next) {
 }
 async function updateCocktailById(req, res, next) {
   try {
-    const { cocktailId } = req.params;
+    const { CocktailId } = req.params;
     const updateData = req.body;
-    if (!cocktailId) {
+    if (!CocktailId) {
       throw errorResponder(
         errorTypes.VALIDATION_ERROR,
         'Cocktail Id is required'
       );
     }
-    if (Number.isNaN(cocktailId)) {
+    if (Number.isNaN(CocktailId)) {
       throw errorResponder(
         errorTypes.VALIDATION_ERROR,
         'Cocktail Id must be a number'
       );
     }
     if ('cocktailId' in updateData) {
-      if (Number(updateData.cocktailId) !== Number(cocktailId)) {
+      if (Number(updateData.cocktailId) !== Number(CocktailId)) {
         throw errorResponder(
           errorTypes.VALIDATION_ERROR,
           'cocktailId cannot be updated'
@@ -97,7 +95,7 @@ async function updateCocktailById(req, res, next) {
       delete updateData.cocktailId;
     }
     const updatedCocktail = await cocktailService.updateCocktailByCocktailId(
-      cocktailId,
+      CocktailId,
       updateData
     );
     res.json(updatedCocktail);
@@ -122,7 +120,7 @@ async function getByFirstLetter(req, res, next) {
       );
     }
     const cocktail = await cocktailService.findByFirstLetter(letter);
-    if (!cocktail) {
+    if (cocktail.length === 0) {
       throw errorResponder(errorTypes.NOT_FOUND, 'Cocktail not found');
     }
     res.json(cocktail);
@@ -133,21 +131,27 @@ async function getByFirstLetter(req, res, next) {
 
 async function getByCocktailId(req, res, next) {
   try {
-    const { cocktailId } = req.params;
-    if (!cocktailId) {
+    const { CocktailId } = req.params;
+    if (!CocktailId) {
       throw errorResponder(
         errorTypes.VALIDATION_ERROR,
         'Cocktail Id is required'
       );
     }
-    if (Number.isNaN(cocktailId)) {
+    if (Number.isNaN(CocktailId)) {
       throw errorResponder(
         errorTypes.VALIDATION_ERROR,
         'Cocktail Id must be a number'
       );
     }
-    const cocktail = await cocktailService.getByCocktailId(cocktailId);
-    if (!cocktail) {
+    if (CocktailId < 10000 || CocktailId > 20000) {
+      throw errorResponder(
+        errorTypes.VALIDATION_ERROR,
+        'Cocktail Id must be 5-digit number'
+      );
+    }
+    const cocktail = await cocktailService.getByCocktailId(CocktailId);
+    if (cocktail.length === 0) {
       throw errorResponder(errorTypes.NOT_FOUND, 'Cocktail not found');
     }
     res.json(cocktail);
@@ -158,7 +162,7 @@ async function getByCocktailId(req, res, next) {
 
 async function getPopularCocktails(req, res, next) {
   try {
-    const popularCocktails = await cocktailService.getPopularCocktails(); // lewat service
+    const popularCocktails = await cocktailService.getPopularCocktails();
     res.status(200).json(popularCocktails);
   } catch (error) {
     next(error);
@@ -167,8 +171,8 @@ async function getPopularCocktails(req, res, next) {
 
 async function getCountryByName(req, res, next) {
   try {
-    const { country } = req.params;
-    const cocktails = await cocktailService.getCocktailsByCountry(country);
+    const { Country } = req.params;
+    const cocktails = await cocktailService.getCocktailsByCountry(Country);
     if (cocktails.length === 0) {
       throw errorResponder(
         errorTypes.NOT_FOUND,
@@ -183,12 +187,17 @@ async function getCountryByName(req, res, next) {
 
 async function getGlassCocktail(req, res, next) {
   try {
-    const { glass } = req.params;
-    const cocktails = await cocktailService.getCocktailByGlass(glass);
+    const { Glass } = req.params;
+    const cocktails = await cocktailService.getCocktailByGlass(Glass);
     if (cocktails.length === 0) {
       throw errorResponder(errorTypes.NOT_FOUND, 'No cocktails found ');
     }
-    res.status(200).json(cocktails);
+    const filterCocktails = cocktails.map((cocktail) => ({
+      Name: cocktail.Name,
+      Drinkthumb: cocktail.DrinkThumb,
+      CocktailId: cocktail.CocktailId,
+    }));
+    res.status(200).json(filterCocktails);
   } catch (error) {
     next(error);
   }
@@ -196,12 +205,17 @@ async function getGlassCocktail(req, res, next) {
 
 async function getCocktailFlavour(req, res, next) {
   try {
-    const { flavour } = req.params;
-    const cocktails = await cocktailService.getCocktailFlavour(flavour);
+    const { Flavour } = req.params;
+    const cocktails = await cocktailService.getCocktailFlavour(Flavour);
     if (cocktails.length === 0) {
       throw errorResponder(errorTypes.NOT_FOUND, 'No cocktails found ');
     }
-    res.json(cocktails);
+    const filterCocktails = cocktails.map((cocktail) => ({
+      Name: cocktail.Name,
+      Drinkthumb: cocktail.DrinkThumb,
+      CocktailId: cocktail.CocktailId,
+    }));
+    res.json(filterCocktails);
   } catch (error) {
     next(error);
   }
@@ -210,12 +224,66 @@ async function getCocktailFlavour(req, res, next) {
 async function getCocktailByAlcoholic(req, res, next) {
   try {
     const cocktails = await cocktailService.getCocktailAlcoholic();
-    res.json(cocktails);
+    const filterCocktails = cocktails.map((cocktail) => ({
+      name: cocktail.Name,
+      Drinkthumb: cocktail.DrinkThumb,
+      cocktailId: cocktail.CocktailId,
+    }));
+    res.json(filterCocktails);
   } catch (error) {
     next(error);
   }
 }
 
+async function getCocktailByNonAlcoholic(req, res, next) {
+  try {
+    const cocktails = await cocktailService.getCocktailNonAlcoholic();
+    const filterCocktails = cocktails.map((cocktail) => ({
+      name: cocktail.Name,
+      Drinkthumb: cocktail.DrinkThumb,
+      cocktailId: cocktail.CocktailId,
+    }));
+    res.json(filterCocktails);
+  } catch (error) {
+    next(error);
+  }
+}
+
+async function getLatestCocktail(req, res, next) {
+  try {
+    const cocktail = await cocktailService.getLatestCocktail();
+    res.json(cocktail);
+  } catch (error) {
+    next(error);
+  }
+}
+
+async function getCategoryCocktail(req, res, next) {
+  try {
+    const { Category } = req.params;
+    const cocktails = await cocktailService.getCategoryCocktail(Category);
+    if (cocktails.length === 0) {
+      throw errorResponder(errorTypes.NOT_FOUND, 'No cocktails found ');
+    }
+    const filterCocktails = cocktails.map((cocktail) => ({
+      Name: cocktail.Name,
+      Drinkthumb: cocktail.DrinkThumb,
+      CocktailId: cocktail.CocktailId,
+    }));
+    res.status(200).json(filterCocktails);
+  } catch (error) {
+    next(error);
+  }
+}
+
+async function getRandomCocktail(req, res, next) {
+  try {
+    const cocktails = await cocktailService.getRandomCocktail();
+    res.json(cocktails);
+  } catch (error) {
+    next(error);
+  }
+}
 module.exports = {
   createCocktail,
   getCocktailByName,
@@ -228,4 +296,8 @@ module.exports = {
   getGlassCocktail,
   getCocktailFlavour,
   getCocktailByAlcoholic,
+  getCocktailByNonAlcoholic,
+  getLatestCocktail,
+  getCategoryCocktail,
+  getRandomCocktail,
 };
