@@ -28,10 +28,13 @@ async function createCocktail(req, res, next) {
     if (CocktailId < 10000 || CocktailId > 20000) {
       throw errorResponder(
         errorTypes.VALIDATION_ERROR,
-        'Cocktail Id must be 5-digit number'
+        'Cocktail Id must be 5-digit number and must in Coctailid Range'
       );
     }
-    req.body.dateModified = new Date();
+    req.body.dateModified = new Date()
+      .toISOString()
+      .slice(0, 19)
+      .replace('T', ' ');
     const newCocktail = await cocktailService.createCocktail(req.body);
     if (!newCocktail) {
       throw errorResponder(
@@ -52,7 +55,7 @@ async function getCocktailByName(req, res, next) {
       throw errorResponder(errorTypes.VALIDATION_ERROR, 'Name is required');
     }
     const cocktail = await cocktailService.findCocktailByName(Name);
-    if (!cocktail) {
+    if (cocktail.length === 0) {
       throw errorResponder(errorTypes.NOT_FOUND, 'Cocktail not found');
     }
     res.json(cocktail);
@@ -94,11 +97,42 @@ async function updateCocktailById(req, res, next) {
       }
       delete updateData.cocktailId;
     }
+    req.body.dateModified = new Date()
+      .toISOString()
+      .slice(0, 19)
+      .replace('T', ' ');
+
     const updatedCocktail = await cocktailService.updateCocktailByCocktailId(
       CocktailId,
       updateData
     );
     res.json(updatedCocktail);
+  } catch (error) {
+    next(error);
+  }
+}
+
+async function deleteCocktailById(req, res, next) {
+  try {
+    const { CocktailId } = req.params;
+    if (!CocktailId) {
+      throw errorResponder(
+        errorTypes.VALIDATION_ERROR,
+        'Cocktail Id is required'
+      );
+    }
+    if (Number.isNaN(CocktailId)) {
+      throw errorResponder(
+        errorTypes.VALIDATION_ERROR,
+        'Cocktail Id must be a number'
+      );
+    }
+    const deleteCocktail =
+      await cocktailService.deleteCocktailByCocktailId(CocktailId);
+    if (!deleteCocktail) {
+      throw errorResponder(errorTypes.NOT_FOUND, 'CocktailID not found');
+    }
+    res.json(deleteCocktail);
   } catch (error) {
     next(error);
   }
@@ -284,6 +318,7 @@ async function getRandomCocktail(req, res, next) {
     next(error);
   }
 }
+
 module.exports = {
   createCocktail,
   getCocktailByName,
@@ -300,4 +335,5 @@ module.exports = {
   getLatestCocktail,
   getCategoryCocktail,
   getRandomCocktail,
+  deleteCocktailById,
 };

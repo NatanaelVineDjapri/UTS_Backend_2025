@@ -213,7 +213,7 @@ const cocktailSchema = new mongoose.Schema(
       required: false,
     },
     dateModified: {
-      type: Date,
+      type: String,
       require: false,
     },
   },

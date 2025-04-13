@@ -8,6 +8,7 @@ router.get('/all', cocktailController.getAllCocktails);
 router.get('/search/:Name', cocktailController.getCocktailByName);
 router.get('/popular', cocktailController.getPopularCocktails);
 router.put('/update/:CocktailId', cocktailController.updateCocktailById);
+router.delete('/delete/:CocktailId', cocktailController.deleteCocktailById);
 router.get('/country/:Country', cocktailController.getCountryByName);
 router.get('/glass/:Glass', cocktailController.getGlassCocktail);
 router.get('/letter/:letter', cocktailController.getByFirstLetter);

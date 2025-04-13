@@ -26,6 +26,9 @@ async function updateCocktailByCocktailId(CocktailId, updateData) {
   return cocktailRepository.updateCocktailByCocktailId(CocktailId, updateData);
 }
 
+async function deleteCocktailByCocktailId(cocktailId) {
+  return cocktailRepository.deleteCocktailByCocktailId(cocktailId);
+}
 async function findByFirstLetter(letter) {
   return cocktailRepository.findByFirstLetter(letter);
 }
@@ -90,4 +93,5 @@ module.exports = {
   getLatestCocktail,
   getCategoryCocktail,
   getRandomCocktail,
+  deleteCocktailByCocktailId,
 };
