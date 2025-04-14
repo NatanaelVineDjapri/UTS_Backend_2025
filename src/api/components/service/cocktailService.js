@@ -18,8 +18,8 @@ async function findCocktailByName(Name) {
   return cocktailRepository.findByName(Name);
 }
 
-async function getAllCocktails() {
-  return cocktailRepository.findAllCocktails();
+async function getAllCocktails(offset, limit) {
+  return cocktailRepository.findAllCocktails(offset, limit);
 }
 
 async function updateCocktailByCocktailId(CocktailId, updateData) {
@@ -41,28 +41,32 @@ async function getPopularCocktails() {
   return cocktailRepository.findPopularCocktails();
 }
 
-async function getCocktailsByCountry(Country) {
-  return cocktailRepository.findByCountry(Country);
+async function getCocktailsByCountry(Country, offset, limit) {
+  return cocktailRepository.findByCountry(Country, offset, limit);
 }
 
-async function getCocktailByGlass(Glass) {
-  return cocktailRepository.findByGlass(Glass);
+async function getCocktailByGlass(Glass, offset, limit) {
+  return cocktailRepository.findByGlass(Glass, offset, limit);
 }
 
-async function getCocktailFlavour(Flavour) {
-  const cocktails = await cocktailRepository.findByFlavour(Flavour);
+async function getCocktailFlavour(Flavour, offset, limit) {
+  const cocktails = await cocktailRepository.findByFlavour(
+    Flavour,
+    offset,
+    limit
+  );
   if (!cocktails.length) {
     throw new Error('No cocktails found with that flavour');
   }
   return cocktails;
 }
 
-async function getCocktailAlcoholic() {
-  return cocktailRepository.findAlcoholic();
+async function getCocktailAlcoholic(offset, limit) {
+  return cocktailRepository.findAlcoholic(offset, limit);
 }
 
-async function getCocktailNonAlcoholic() {
-  return cocktailRepository.findNonAlcoholic();
+async function getCocktailNonAlcoholic(offset, limit) {
+  return cocktailRepository.findNonAlcoholic(offset, limit);
 }
 
 async function getLatestCocktail() {

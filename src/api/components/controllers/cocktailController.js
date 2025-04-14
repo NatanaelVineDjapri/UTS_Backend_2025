@@ -66,12 +66,16 @@ async function getCocktailByName(req, res, next) {
 
 async function getAllCocktails(req, res, next) {
   try {
-    const cocktails = await cocktailService.getAllCocktails();
+    const offset = Number(req.query.offset) || 0;
+    const limit = Number(req.query.limit) || 10;
+
+    const cocktails = await cocktailService.getAllCocktails(offset, limit);
     res.json(cocktails);
   } catch (error) {
     next(error);
   }
 }
+
 async function updateCocktailById(req, res, next) {
   try {
     const { CocktailId } = req.params;
@@ -206,7 +210,13 @@ async function getPopularCocktails(req, res, next) {
 async function getCountryByName(req, res, next) {
   try {
     const { Country } = req.params;
-    const cocktails = await cocktailService.getCocktailsByCountry(Country);
+    const offset = Number(req.query.offset) || 0;
+    const limit = Number(req.query.limit) || 10;
+    const cocktails = await cocktailService.getCocktailsByCountry(
+      Country,
+      offset,
+      limit
+    );
     if (cocktails.length === 0) {
       throw errorResponder(
         errorTypes.NOT_FOUND,
@@ -222,7 +232,13 @@ async function getCountryByName(req, res, next) {
 async function getGlassCocktail(req, res, next) {
   try {
     const { Glass } = req.params;
-    const cocktails = await cocktailService.getCocktailByGlass(Glass);
+    const offset = Number(req.query.offset) || 0;
+    const limit = Number(req.query.limit) || 10;
+    const cocktails = await cocktailService.getCocktailByGlass(
+      Glass,
+      offset,
+      limit
+    );
     if (cocktails.length === 0) {
       throw errorResponder(errorTypes.NOT_FOUND, 'No cocktails found ');
     }
@@ -240,7 +256,13 @@ async function getGlassCocktail(req, res, next) {
 async function getCocktailFlavour(req, res, next) {
   try {
     const { Flavour } = req.params;
-    const cocktails = await cocktailService.getCocktailFlavour(Flavour);
+    const offset = Number(req.query.offset) || 0;
+    const limit = Number(req.query.limit) || 10;
+    const cocktails = await cocktailService.getCocktailFlavour(
+      Flavour,
+      offset,
+      limit
+    );
     if (cocktails.length === 0) {
       throw errorResponder(errorTypes.NOT_FOUND, 'No cocktails found ');
     }
@@ -257,7 +279,9 @@ async function getCocktailFlavour(req, res, next) {
 
 async function getCocktailByAlcoholic(req, res, next) {
   try {
-    const cocktails = await cocktailService.getCocktailAlcoholic();
+    const offset = Number(req.query.offset) || 0;
+    const limit = Number(req.query.limit) || 10;
+    const cocktails = await cocktailService.getCocktailAlcoholic(offset, limit);
     const filterCocktails = cocktails.map((cocktail) => ({
       name: cocktail.Name,
       Drinkthumb: cocktail.DrinkThumb,
@@ -271,7 +295,12 @@ async function getCocktailByAlcoholic(req, res, next) {
 
 async function getCocktailByNonAlcoholic(req, res, next) {
   try {
-    const cocktails = await cocktailService.getCocktailNonAlcoholic();
+    const offset = Number(req.query.offset) || 0;
+    const limit = Number(req.query.limit) || 10;
+    const cocktails = await cocktailService.getCocktailNonAlcoholic(
+      offset,
+      limit
+    );
     const filterCocktails = cocktails.map((cocktail) => ({
       name: cocktail.Name,
       Drinkthumb: cocktail.DrinkThumb,

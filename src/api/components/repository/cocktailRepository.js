@@ -24,8 +24,8 @@ async function findByName(Name) {
   return cocktail.sort(sortByName);
 }
 
-async function findAllCocktails() {
-  return Cocktail.find({}, { _id: 0 });
+async function findAllCocktails(offset, limit) {
+  return Cocktail.find({}, { _id: 0 }).skip(offset).limit(limit).exec();
 }
 
 async function updateCocktailByCocktailId(CocktailId, updateData) {
@@ -51,32 +51,47 @@ async function findPopularCocktails() {
   return Cocktail.find({ Popular: true }, { _id: 0 });
 }
 
-async function findByCountry(Country) {
+async function findByCountry(Country, offset, limit) {
   return Cocktail.find(
     { Country: { $regex: `^${Country.replace(/_/g, ' ')}$`, $options: 'i' } },
     { _id: 0 }
-  );
+  )
+    .skip(offset)
+    .limit(limit)
+    .exec();
 }
 
-async function findByGlass(Glass) {
+async function findByGlass(Glass, offset, limit) {
   return Cocktail.find(
     { Glass: { $regex: `^${Glass.replace(/_/g, ' ')}$`, $options: 'i' } },
     { _id: 0 }
-  );
+  )
+    .skip(offset)
+    .limit(limit)
+    .exec();
 }
 
-async function findByFlavour(Flavour) {
+async function findByFlavour(Flavour, offset, limit) {
   return Cocktail.find(
     { Flavour: { $regex: Flavour, $options: 'i' } },
     { _id: 0 }
-  );
+  )
+    .skip(offset)
+    .limit(limit)
+    .exec();
 }
 
-async function findAlcoholic() {
-  return Cocktail.find({ Alcoholic: true }, { _id: 0 });
+async function findAlcoholic(offset, limit) {
+  return Cocktail.find({ Alcoholic: true }, { _id: 0 })
+    .skip(offset)
+    .limit(limit)
+    .exec();
 }
-async function findNonAlcoholic() {
-  return Cocktail.find({ Alcoholic: false }, { _id: 0 });
+async function findNonAlcoholic(offset, limit) {
+  return Cocktail.find({ Alcoholic: false }, { _id: 0 })
+    .skip(offset)
+    .limit(limit)
+    .exec();
 }
 
 async function findLatestCocktail() {
