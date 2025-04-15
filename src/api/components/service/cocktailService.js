@@ -97,5 +97,4 @@ module.exports = {
   getLatestCocktail,
   getCategoryCocktail,
   getRandomCocktail,
-  deleteCocktailByCocktailId,
 };
