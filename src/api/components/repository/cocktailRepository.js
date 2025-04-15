@@ -114,6 +114,33 @@ async function findRandomCategory() {
   ]);
 }
 
+function countAll() {
+  return Cocktail.countDocuments();
+}
+
+function groupBy(field) {
+  const alias = field.toLowerCase();
+
+  return Cocktail.aggregate([
+    {
+      $group: {
+        _id: `$${field}`,
+        count: { $sum: 1 },
+      },
+    },
+    {
+      $project: {
+        [alias]: '$_id',
+        count: 1,
+        _id: 0,
+      },
+    },
+    {
+      $sort: { count: -1 },
+    },
+  ]);
+}
+
 module.exports = {
   create,
   findByName,
@@ -131,4 +158,6 @@ module.exports = {
   findByCategory,
   findRandomCategory,
   deleteCocktailByCocktailId,
+  countAll,
+  groupBy,
 };

@@ -348,6 +348,14 @@ async function getRandomCocktail(req, res, next) {
   }
 }
 
+async function getCocktailStats(req, res, next) {
+  try {
+    const stats = await cocktailService.getCocktailStats();
+    res.status(200).json(stats);
+  } catch (error) {
+    next(error);
+  }
+}
 module.exports = {
   createCocktail,
   getCocktailByName,
@@ -365,4 +373,5 @@ module.exports = {
   getCategoryCocktail,
   getRandomCocktail,
   deleteCocktailById,
+  getCocktailStats,
 };
