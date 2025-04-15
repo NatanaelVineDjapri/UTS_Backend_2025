@@ -28,7 +28,7 @@ async function createCocktail(req, res, next) {
     if (CocktailId < 10000 || CocktailId > 20000) {
       throw errorResponder(
         errorTypes.VALIDATION_ERROR,
-        'Cocktail Id must be 5-digit number and must in Cocktailid Range'
+        'Cocktail Id must be 5-digit number and must in Coctailid Range'
       );
     }
     req.body.dateModified = new Date()
