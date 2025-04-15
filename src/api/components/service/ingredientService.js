@@ -5,13 +5,13 @@ async function createIngredient(data) {
 }
 
 async function ingredientNameExists(Name) {
-  const ingredients = await ingredientRepository.findIngredientByName(Name); // Correct repository usage
+  const ingredients = await ingredientRepository.getIngredientByName(Name); // Correct repository usage
   return !!ingredients.length;
 }
 async function ingredientIdExists(IngredientId) {
   const ingredients =
-    await ingredientRepository.findByIngredientId(IngredientId); // Correct repository usage
-  return !!ingredients;
+    await ingredientRepository.getIngredientById(IngredientId); // Correct repository usage
+  return !!ingredients.length > 0;
 }
 
 async function getIngredientByName(Name) {

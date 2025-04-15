@@ -2,16 +2,16 @@ const mongoose = require('mongoose');
 
 const ingredientSchema = new mongoose.Schema(
   {
-    Name: {
-      type: String,
-      required: true,
-      unique: true,
-    },
     IngredientId: {
       type: Number,
       required: true,
       unique: true,
     },
+    Name: {
+        type: String,
+        required: true,
+        unique: true,
+      },
     Description: {
       type: String,
       required: false,
@@ -21,7 +21,7 @@ const ingredientSchema = new mongoose.Schema(
       required: true,
     },
     Alcohol: {
-      type: String,
+      type: Boolean,
       required: true,
     },
     AlcoholByVolume: {
