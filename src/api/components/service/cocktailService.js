@@ -79,6 +79,11 @@ async function getCategoryCocktail(Category) {
 async function getRandomCocktail() {
   return cocktailRepository.findRandomCategory();
 }
+
+async function findByIngredientName(ingredient) {
+  return cocktailRepository.findByIngredientName(ingredient);
+}
+
 module.exports = {
   createCocktail,
   findCocktailByName,
@@ -98,4 +103,6 @@ module.exports = {
   getCategoryCocktail,
   getRandomCocktail,
   deleteCocktailByCocktailId,
+  findByIngredientName,
+
 };

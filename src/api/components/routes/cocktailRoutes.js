@@ -19,5 +19,6 @@ router.get('/nonalcoholic', cocktailController.getCocktailByNonAlcoholic);
 router.get('/latest', cocktailController.getLatestCocktail);
 router.get('/category/:Category', cocktailController.getCategoryCocktail);
 router.get('/random', cocktailController.getRandomCocktail);
+router.get('/ingredient/:ingredient', cocktailController.getCocktailByIngredient);
 
 module.exports = router;
