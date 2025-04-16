@@ -115,11 +115,15 @@ async function findRandomCategory() {
 }
 
 async function findByIngredientName(ingredient) {
-  return Cocktail.find(
-    { Ingredients: { $elemMatch: { $regex: ingredient, $options: 'i' } } },
-    { _id: 0 }
-  );
+  const regex = new RegExp(ingredient, 'i');
+
+  const ingredientFields = Array.from({ length: 15 }, (_, i) => ({
+    [`Ingredient${i + 1}`]: regex,
+  }));
+
+  return Cocktail.find({ $or: ingredientFields }, { _id: 0 });
 }
+
 
 module.exports = {
   create,
@@ -139,5 +143,4 @@ module.exports = {
   findRandomCategory,
   deleteCocktailByCocktailId,
   findByIngredientName,
-
 };
