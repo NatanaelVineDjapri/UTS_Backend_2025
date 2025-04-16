@@ -114,6 +114,19 @@ async function findRandomCategory() {
   ]);
 }
 
+
+async function findByIngredientName(ingredient) {
+  const regex = new RegExp(ingredient, 'i');
+
+  const ingredientFields = Array.from({ length: 15 }, (_, i) => ({
+    [`Ingredient${i + 1}`]: regex,
+  }));
+
+  return Cocktail.find({ $or: ingredientFields }, { _id: 0 });
+}
+
+
+
 function countAll() {
   return Cocktail.countDocuments();
 }
@@ -141,6 +154,7 @@ function groupBy(field) {
   ]);
 }
 
+
 module.exports = {
   create,
   findByName,
@@ -158,6 +172,8 @@ module.exports = {
   findByCategory,
   findRandomCategory,
   deleteCocktailByCocktailId,
+  findByIngredientName,
   countAll,
   groupBy,
+
 };
