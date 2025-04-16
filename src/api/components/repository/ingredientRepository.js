@@ -25,8 +25,8 @@ async function getIngredientByName(Name) {
 }
 
 async function getIngredientById(IngredientId) {
-    return Ingredient.find({ IngredientId }, { _id: 0 });
-  }
+  return Ingredient.find({ IngredientId }, { _id: 0 });
+}
 async function updateIngredientById(IngredientId, updateData) {
   return Ingredient.findOneAndUpdate({ IngredientId }, updateData, {
     new: true,

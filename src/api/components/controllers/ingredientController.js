@@ -124,7 +124,8 @@ async function getIngredientByName(req, res, next) {
     if (!IngredientName) {
       throw errorResponder(errorTypes.VALIDATION_ERROR, 'Name is required');
     }
-    const Ingredient = await ingredientService.getIngredientByName(IngredientName); // Corrected service method
+    const Ingredient =
+      await ingredientService.getIngredientByName(IngredientName); // Corrected service method
     if (Ingredient.length === 0) {
       throw errorResponder(errorTypes.NOT_FOUND, 'Ingredient not found');
     }

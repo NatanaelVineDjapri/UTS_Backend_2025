@@ -356,6 +356,7 @@ async function getCocktailStats(req, res, next) {
     next(error);
   }
 }
+
 module.exports = {
   createCocktail,
   getCocktailByName,
