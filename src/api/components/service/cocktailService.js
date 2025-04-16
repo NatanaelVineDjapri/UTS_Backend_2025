@@ -84,6 +84,21 @@ async function findByIngredientName(ingredient) {
   return cocktailRepository.findByIngredientName(ingredient);
 }
 
+async function getCocktailStats() {
+  const total = await cocktailRepository.countAll();
+  const byCategory = await cocktailRepository.groupBy('Category');
+  const byCountry = await cocktailRepository.groupBy('Country');
+  const byGlass = await cocktailRepository.groupBy('Glass');
+  const alcoholStats = await cocktailRepository.groupBy('Alcoholic');
+
+  return {
+    total,
+    byCategory,
+    byCountry,
+    byGlass,
+    alcoholStats,
+  };
+}
 module.exports = {
   createCocktail,
   findCocktailByName,
@@ -104,4 +119,5 @@ module.exports = {
   getRandomCocktail,
   deleteCocktailByCocktailId,
   findByIngredientName,
+  getCocktailStats,
 };

@@ -114,6 +114,7 @@ async function findRandomCategory() {
   ]);
 }
 
+
 async function findByIngredientName(ingredient) {
   const regex = new RegExp(ingredient, 'i');
 
@@ -122,6 +123,35 @@ async function findByIngredientName(ingredient) {
   }));
 
   return Cocktail.find({ $or: ingredientFields }, { _id: 0 });
+}
+
+
+
+function countAll() {
+  return Cocktail.countDocuments();
+}
+
+function groupBy(field) {
+  const alias = field.toLowerCase();
+
+  return Cocktail.aggregate([
+    {
+      $group: {
+        _id: `$${field}`,
+        count: { $sum: 1 },
+      },
+    },
+    {
+      $project: {
+        [alias]: '$_id',
+        count: 1,
+        _id: 0,
+      },
+    },
+    {
+      $sort: { count: -1 },
+    },
+  ]);
 }
 
 
@@ -143,4 +173,7 @@ module.exports = {
   findRandomCategory,
   deleteCocktailByCocktailId,
   findByIngredientName,
+  countAll,
+  groupBy,
+
 };
