@@ -368,7 +368,7 @@ async function getCocktailByIngredient(req, res, next) {
       );
     }
     res.status(200).json(cocktails);
-  } catch{
+  } catch (error) {
     next (error);
   }
 async function getCocktailStats(req, res, next) {
