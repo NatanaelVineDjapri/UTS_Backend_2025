@@ -114,7 +114,6 @@ async function findRandomCategory() {
   ]);
 }
 
-
 async function findByIngredientName(ingredient) {
   const regex = new RegExp(ingredient, 'i');
 
@@ -124,8 +123,6 @@ async function findByIngredientName(ingredient) {
 
   return Cocktail.find({ $or: ingredientFields }, { _id: 0 });
 }
-
-
 
 function countAll() {
   return Cocktail.countDocuments();
@@ -154,7 +151,6 @@ function groupBy(field) {
   ]);
 }
 
-
 module.exports = {
   create,
   findByName,
@@ -175,5 +171,4 @@ module.exports = {
   findByIngredientName,
   countAll,
   groupBy,
-
 };

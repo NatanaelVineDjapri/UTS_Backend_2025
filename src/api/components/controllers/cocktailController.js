@@ -348,7 +348,6 @@ async function getRandomCocktail(req, res, next) {
   }
 }
 
-
 async function getCocktailByIngredient(req, res, next) {
   try {
     const { ingredient } = req.params;
@@ -368,9 +367,10 @@ async function getCocktailByIngredient(req, res, next) {
       );
     }
     res.status(200).json(cocktails);
-  } catch{
-    next (error);
+  } catch (error) {
+    next(error);
   }
+}
 async function getCocktailStats(req, res, next) {
   try {
     const stats = await cocktailService.getCocktailStats();
