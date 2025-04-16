@@ -367,8 +367,10 @@ async function getCocktailByIngredient(req, res, next) {
         'No cocktails found with that ingredient'
       );
     }
-
     res.status(200).json(cocktails);
+  } catch{
+    next (error);
+  }
 async function getCocktailStats(req, res, next) {
   try {
     const stats = await cocktailService.getCocktailStats();
