@@ -348,6 +348,27 @@ async function getRandomCocktail(req, res, next) {
   }
 }
 
+
+async function getCocktailByIngredient(req, res, next) {
+  try {
+    const { ingredient } = req.params;
+    if (!ingredient) {
+      throw errorResponder(
+        errorTypes.VALIDATION_ERROR,
+        'Ingredient is required'
+      );
+    }
+
+    const cocktails = await cocktailService.findByIngredientName(ingredient);
+
+    if (!cocktails || cocktails.length === 0) {
+      throw errorResponder(
+        errorTypes.NOT_FOUND,
+        'No cocktails found with that ingredient'
+      );
+    }
+
+    res.status(200).json(cocktails);
 async function getCocktailStats(req, res, next) {
   try {
     const stats = await cocktailService.getCocktailStats();
@@ -356,6 +377,7 @@ async function getCocktailStats(req, res, next) {
     next(error);
   }
 }
+
 module.exports = {
   createCocktail,
   getCocktailByName,
@@ -373,5 +395,6 @@ module.exports = {
   getCategoryCocktail,
   getRandomCocktail,
   deleteCocktailById,
+  getCocktailByIngredient,
   getCocktailStats,
 };
