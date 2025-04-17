@@ -21,5 +21,6 @@ router.get(
   '/ingredient/search/id/:IngredientId',
   ingredientController.getIngredientById
 );
+router.get('/ingredient/all', ingredientController.getAllIngredient);
 
 module.exports = router;
