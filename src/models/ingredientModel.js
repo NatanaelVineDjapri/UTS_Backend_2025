@@ -18,7 +18,7 @@ const ingredientSchema = new mongoose.Schema(
     },
     Type: {
       type: String,
-      required: true,
+      required: false,
     },
     Alcohol: {
       type: Boolean,
