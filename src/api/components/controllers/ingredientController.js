@@ -124,8 +124,7 @@ async function getIngredientByName(req, res, next) {
     if (!IngredientName) {
       throw errorResponder(errorTypes.VALIDATION_ERROR, 'Name is required');
     }
-    const Ingredient =
-      await ingredientService.getIngredientByName(IngredientName); // Corrected service method
+    const Ingredient = await ingredientService.getIngredientByName(IngredientName); // Corrected service method
     if (Ingredient.length === 0) {
       throw errorResponder(errorTypes.NOT_FOUND, 'Ingredient not found');
     }
@@ -166,10 +165,23 @@ async function getIngredientById(req, res, next) {
   }
 }
 
+async function getAllIngredient(req, res, next) {
+  try {
+    const offset = Number(req.query.offset) || 0;
+    const limit = Number(req.query.limit) || 10;
+
+    const ingredient = await ingredientService.getAllIngredient(offset, limit);
+    res.json(ingredient);
+  } catch (error) {
+    next(error);
+  }
+}
+
 module.exports = {
   createIngredient,
   updateIngredientById,
   deleteIngredientById,
   getIngredientByName,
   getIngredientById,
+  getAllIngredient
 };

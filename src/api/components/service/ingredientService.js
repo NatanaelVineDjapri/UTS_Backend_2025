@@ -30,6 +30,9 @@ async function getIngredientById(IngredientId) {
   return ingredientRepository.getIngredientById(IngredientId); // Correct repository usage
 }
 
+async function getAllIngredient(offset, limit) {
+  return ingredientRepository.getAllIngredient(offset, limit);
+}
 module.exports = {
   createIngredient,
   ingredientNameExists,
@@ -38,4 +41,5 @@ module.exports = {
   updateIngredientById,
   deleteIngredientById,
   getIngredientById,
+  getAllIngredient
 };
