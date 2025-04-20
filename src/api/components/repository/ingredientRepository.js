@@ -37,10 +37,15 @@ async function deleteIngredientById(IngredientId) {
   return Ingredient.findOneAndDelete({ IngredientId });
 }
 
+async function getAllIngredient(offset, limit) {
+  return Ingredient.find({}, { _id: 0 }).skip(offset).limit(limit).exec();
+}
+
 module.exports = {
   createIngredient,
   getIngredientByName,
   getIngredientById,
   updateIngredientById,
   deleteIngredientById,
+  getAllIngredient
 };
