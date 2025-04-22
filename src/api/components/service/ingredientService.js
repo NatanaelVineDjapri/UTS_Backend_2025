@@ -1,11 +1,11 @@
-const ingredientRepository = require('../repository/ingredientRepository'); // Correct repository import
+const ingredientRepository = require('../repository/ingredientRepository');
 
 async function createIngredient(data) {
-  return ingredientRepository.createIngredient(data); // Correct repository usage
+  return ingredientRepository.createIngredient(data); 
 }
 
 async function ingredientNameExists(Name) {
-  const ingredients = await ingredientRepository.getIngredientByName(Name); // Correct repository usage
+  const ingredients = await ingredientRepository.getIngredientByName(Name);
   return !!ingredients.length;
 }
 async function ingredientIdExists(IngredientId) {
