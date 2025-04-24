@@ -53,4 +53,5 @@ module.exports = {
   updateIngredientById,
   deleteIngredientById,
   getAllIngredient,
+  getIngredientByvolume
 };
