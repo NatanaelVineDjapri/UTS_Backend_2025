@@ -10,28 +10,32 @@ async function ingredientNameExists(Name) {
 }
 async function ingredientIdExists(IngredientId) {
   const ingredients =
-    await ingredientRepository.getIngredientById(IngredientId); // Correct repository usage
+    await ingredientRepository.getIngredientById(IngredientId); 
   return !!ingredients.length > 0;
 }
 
 async function getIngredientByName(Name) {
-  return ingredientRepository.getIngredientByName(Name); // Correct repository usage
+  return ingredientRepository.getIngredientByName(Name); 
 }
 
 async function updateIngredientById(IngredientId, updateData) {
-  return ingredientRepository.updateIngredientById(IngredientId, updateData); // Correct repository usage
+  return ingredientRepository.updateIngredientById(IngredientId, updateData); 
 }
 
 async function deleteIngredientById(IngredientId) {
-  return ingredientRepository.deleteIngredientById(IngredientId); // Correct repository usage
+  return ingredientRepository.deleteIngredientById(IngredientId); 
 }
 
 async function getIngredientById(IngredientId) {
-  return ingredientRepository.getIngredientById(IngredientId); // Correct repository usage
+  return ingredientRepository.getIngredientById(IngredientId); 
 }
 
 async function getAllIngredient(offset, limit) {
   return ingredientRepository.getAllIngredient(offset, limit);
+}
+
+async function getIngredientByvolume(AlcoholByVolume) {
+  return ingredientRepository.getIngredientByvolume(AlcoholByVolume); 
 }
 module.exports = {
   createIngredient,
@@ -41,5 +45,6 @@ module.exports = {
   updateIngredientById,
   deleteIngredientById,
   getIngredientById,
-  getAllIngredient
+  getAllIngredient,
+  getIngredientByvolume
 };

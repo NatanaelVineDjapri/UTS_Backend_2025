@@ -1,26 +1,14 @@
 const express = require('express');
 
 const router = express.Router();
-const ingredientController = require('../controllers/ingredientController'); // Correct import
+const ingredientController = require('../controllers/ingredientController');
 
-// Correctly using ingredientController instead of cocktailController
 router.post('/ingredient', ingredientController.createIngredient);
-router.put(
-  '/ingredient/update/:IngredientId',
-  ingredientController.updateIngredientById
-);
-router.delete(
-  '/ingredient/delete/:IngredientId',
-  ingredientController.deleteIngredientById
-);
-router.get(
-  '/ingredient/search/name/:IngredientName',
-  ingredientController.getIngredientByName
-);
-router.get(
-  '/ingredient/search/id/:IngredientId',
-  ingredientController.getIngredientById
-);
+router.put('/ingredient/update/:IngredientId',ingredientController.updateIngredientById);
+router.delete('/ingredient/delete/:IngredientId',ingredientController.deleteIngredientById);
+router.get('/ingredient/search/name/:IngredientName',ingredientController.getIngredientByName);
+router.get('/ingredient/search/id/:IngredientId',ingredientController.getIngredientById);
 router.get('/ingredient/all', ingredientController.getAllIngredient);
+router.get('/ingredient/volume/:AlcoholByVolume',ingredientController.getIngredientByvolume);
 
 module.exports = router;

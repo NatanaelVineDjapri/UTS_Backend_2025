@@ -41,11 +41,16 @@ async function getAllIngredient(offset, limit) {
   return Ingredient.find({}, { _id: 0 }).skip(offset).limit(limit).exec();
 }
 
+
+async function getIngredientByvolume(AlcoholByVolume) {
+  return Ingredient.find({ AlcoholByVolume }, { _id: 0 });
+}
+
 module.exports = {
   createIngredient,
   getIngredientByName,
   getIngredientById,
   updateIngredientById,
   deleteIngredientById,
-  getAllIngredient
+  getAllIngredient,
 };

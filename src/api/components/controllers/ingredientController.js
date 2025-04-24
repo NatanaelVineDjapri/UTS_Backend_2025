@@ -1,4 +1,4 @@
-const ingredientService = require('../service/ingredientService'); // Correct service import
+const ingredientService = require('../service/ingredientService'); 
 const { errorResponder, errorTypes } = require('../../../core/error');
 
 async function createIngredient(req, res, next) {
@@ -10,18 +10,16 @@ async function createIngredient(req, res, next) {
     if (!IngredientId) {
       throw errorResponder(
         errorTypes.VALIDATION_ERROR,
-        'IngredientId is required' // Corrected the error message here
+        'IngredientId is required' 
       );
     }
     if (await ingredientService.ingredientNameExists(Name)) {
-      // Corrected service method
       throw errorResponder(
         errorTypes.NAME_ALREADY_TAKEN,
         'Name Already Exists'
       );
     }
     if (await ingredientService.ingredientIdExists(IngredientId)) {
-      // Corrected service method
       throw errorResponder(
         errorTypes.NAME_ALREADY_TAKEN,
         'IngredientId Already Exists'
@@ -38,7 +36,7 @@ async function createIngredient(req, res, next) {
       .slice(0, 19)
       .replace('T', ' ');
 
-    const newIngredient = await ingredientService.createIngredient(req.body); // Corrected service method
+    const newIngredient = await ingredientService.createIngredient(req.body); 
     if (!newIngredient) {
       throw errorResponder(
         errorTypes.UNPROCESSABLE_ENTITY,
@@ -82,7 +80,6 @@ async function updateIngredientById(req, res, next) {
       .replace('T', ' ');
 
     const updatedIngredient = await ingredientService.updateIngredientById(
-      // Corrected service method
       IngredientId,
       updateData
     );
@@ -108,7 +105,7 @@ async function deleteIngredientById(req, res, next) {
       );
     }
     const deleteIngredient =
-      await ingredientService.deleteIngredientById(IngredientId); // Corrected service method
+      await ingredientService.deleteIngredientById(IngredientId);
     if (!deleteIngredient) {
       throw errorResponder(errorTypes.NOT_FOUND, 'IngredientId not found');
     }
@@ -124,7 +121,7 @@ async function getIngredientByName(req, res, next) {
     if (!IngredientName) {
       throw errorResponder(errorTypes.VALIDATION_ERROR, 'Name is required');
     }
-    const Ingredient = await ingredientService.getIngredientByName(IngredientName); // Corrected service method
+    const Ingredient = await ingredientService.getIngredientByName(IngredientName);
     if (Ingredient.length === 0) {
       throw errorResponder(errorTypes.NOT_FOUND, 'Ingredient not found');
     }
@@ -152,10 +149,10 @@ async function getIngredientById(req, res, next) {
     if (IngredientId > 1000) {
       throw errorResponder(
         errorTypes.VALIDATION_ERROR,
-        'Ingredient Id must be within the range of 1 to 1000' // Updated message
+        'Ingredient Id must be within the range of 1 to 1000' 
       );
     }
-    const Ingredient = await ingredientService.getIngredientById(IngredientId); // Corrected service method
+    const Ingredient = await ingredientService.getIngredientById(IngredientId); 
     if (Ingredient.length === 0) {
       throw errorResponder(errorTypes.NOT_FOUND, 'Ingredient not found');
     }
@@ -177,11 +174,27 @@ async function getAllIngredient(req, res, next) {
   }
 }
 
+async function getIngredientByvolume(req, res, next) {
+  try {
+    const { AlcoholByVolume } = req.params;
+    if (!AlcoholByVolume) {
+      throw errorResponder(errorTypes.VALIDATION_ERROR, 'Volume is required');
+    }
+    const Ingredient = await ingredientService.getIngredientByvolume(AlcoholByVolume);
+    if (Ingredient.length === 0) {
+      throw errorResponder(errorTypes.NOT_FOUND, 'Ingredient not found');
+    }
+    res.json(Ingredient);
+  } catch (error) {
+    next(error);
+  }
+}
 module.exports = {
   createIngredient,
   updateIngredientById,
   deleteIngredientById,
   getIngredientByName,
   getIngredientById,
-  getAllIngredient
+  getAllIngredient,
+  getIngredientByvolume
 };
