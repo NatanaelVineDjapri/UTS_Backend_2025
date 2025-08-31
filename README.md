@@ -30,8 +30,8 @@ This project was developed as part of a **Mid-Semester Exam (UTS)** for the **Ba
 ### 1. Clone the repository
 
 ```bash
-https://github.com/NatanaelVineDjapri/Cocktails_API.git
-cd laravel-twitter-clone
+git clone https://github.com/NatanaelVineDjapri/Cocktails_API.git
+cd Cocktails_API
 ```
 
 ### 2. Install Node.js dependencies
